@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script type="text/javascript" src="/js/echarts.min.js">
+
+    </script>
+
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+
+</head>
+<body>
+
+<div id="mainke7r" style="height: 500px; width: 460px; float:left"></div>
+<script type="text/javascript">
+
+
+    // 基于准备好的dom，初始化echarts实例
+    var myCharthisday7r = echarts.init(document.getElementById('mainke7r'));
+    myCharthisday7r.showLoading();
+
+
+
+    // data1 = [45,50,55,50]
+    option = {
+        title: {
+
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        toolbox: {
+            feature: {
+                dataView: {
+                    show: true,
+                    readOnly: false
+                },
+
+                saveAsImage: {
+                    show: true
+                }
+            }
+        },
+        grid: {
+            containLabel: true
+        },
+        legend: {
+            data: ['小时入店量']
+        },
+        xAxis: [{
+            type: 'category',
+            axisTick: {
+                alignWithLabel: true
+            },
+            data: ['前三小时','前二小时','前一小时','未来一小时']
+        }],
+        yAxis: [ {
+            type: 'value',
+            name: '小时入店量',
+            min: 0,
+
+            position: 'left'
+        }],
+        series: [{
+            name: '小时入店量',
+            type: 'bar',
+            //yAxisIndex: 1,
+            stack: '小时入店量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+
+            //    data: data1,
+            data:(function (){
+                var res = [];
+                $.ajax({
+                    type: "post",
+                    url: "/servlet/EnterNumChartServlet",
+                    data: {
+                    	num : 4,
+                    	type: 'Hour'
+                    },
+                    async : false,
+                    dataType: "JSON",
+                    success: function(result) {
+                        res=result.Flow;
+                    },
+                    error : function(errorMsg) {
+                        alert("加载数据失败");
+                    }
+
+
+                });
+                return res;
+            })()
+        }]
+    };
+
+
+    myCharthisday7r.hideLoading();
+
+    myCharthisday7r.setOption(option);
+
+
+
+
+</script>
+
+</div>
+
+</body>
+</html>
